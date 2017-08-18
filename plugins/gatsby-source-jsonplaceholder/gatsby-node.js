@@ -3,6 +3,10 @@ exports.sourceNodes = ({ boundActionCreators }) => {
     createNode({
         id: 'foo',
         children: [],
-        parent: '__SOURCE__'
+        parent: '__SOURCE__',
+        internal: {
+            contentDigest: 'asdf',
+            type: 'myStuff'
+        }
     });
 };
