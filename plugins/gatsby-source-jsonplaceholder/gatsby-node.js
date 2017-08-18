@@ -3,6 +3,6 @@ exports.sourceNodes = ({ boundActionCreators }) => {
     createNode({
         id: 'foo',
         children: [],
-        parent: ''
+        parent: '__SOURCE__'
     });
 };
