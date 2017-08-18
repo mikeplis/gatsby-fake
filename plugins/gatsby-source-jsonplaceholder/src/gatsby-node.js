@@ -1,7 +1,3 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 const axios = require('axios');
 const crypto = require(`crypto`);
 const uuidv5 = require('uuid/v5');
@@ -27,10 +23,10 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
     const { createNode, createParentChildLink } = boundActionCreators;
 
     const createUserNode = user => {
-        const { id } = user,
-              rest = _objectWithoutProperties(user, ['id']);
+        const { id, ...rest } = user;
         const contentDigest = getDigest(user);
-        const userNode = _extends({}, rest, {
+        const userNode = {
+            ...rest,
             id: getId(id, USER),
             children: [],
             parent: '__SOURCE__',
@@ -38,16 +34,16 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
                 contentDigest,
                 type: 'PlaceholderUser'
             }
-        });
+        };
         createNode(userNode);
     };
 
     const createPostNode = post => {
-        const { id, userId, body } = post,
-              rest = _objectWithoutProperties(post, ['id', 'userId', 'body']);
+        const { id, userId, body, ...rest } = post;
         const contentDigest = getDigest(post);
         const userNode = getNode(getId(userId, USER));
-        const postNode = _extends({}, rest, {
+        const postNode = {
+            ...rest,
             id: getId(id, POST),
             children: [],
             parent: getId(userId, USER),
@@ -57,17 +53,17 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
                 type: 'PlaceholderPost'
             },
             body
-        });
+        };
         createNode(postNode);
         createParentChildLink({ parent: userNode, child: postNode });
     };
 
     const createCommentNode = comment => {
-        const { id, postId, body } = comment,
-              rest = _objectWithoutProperties(comment, ['id', 'postId', 'body']);
+        const { id, postId, body, ...rest } = comment;
         const contentDigest = getDigest(comment);
         const postNode = getNode(getId(postId, POST));
-        const commentNode = _extends({}, rest, {
+        const commentNode = {
+            ...rest,
             id: getId(id, COMMENT),
             children: [],
             parent: getId(postId, POST),
@@ -77,7 +73,7 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
                 type: 'PlaceholderComment'
             },
             body
-        });
+        };
         createNode(commentNode);
         createParentChildLink({ parent: postNode, child: commentNode });
     };
@@ -85,12 +81,14 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
     const getUsers = axios.get('https://jsonplaceholder.typicode.com/users');
     const getPosts = axios.get('https://jsonplaceholder.typicode.com/posts');
     const getComments = axios.get('https://jsonplaceholder.typicode.com/comments');
-    axios.all([getUsers, getPosts, getComments]).then(axios.spread(({ data: users }, { data: posts }, { data: comments }) => {
-        console.log('got data');
-        users.forEach(createUserNode);
-        posts.forEach(createPostNode);
-        comments.forEach(createCommentNode);
-    }));
+    axios.all([getUsers, getPosts, getComments]).then(
+        axios.spread(({ data: users }, { data: posts }, { data: comments }) => {
+            console.log('got data');
+            users.forEach(createUserNode);
+            posts.forEach(createPostNode);
+            comments.forEach(createCommentNode);
+        })
+    );
 };
 
 /**

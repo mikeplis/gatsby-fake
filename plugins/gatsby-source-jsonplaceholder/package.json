@@ -4,11 +4,14 @@
   "description": "",
   "main": "gatsby-node.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir . --ignore __tests__ --plugins transform-object-rest-spread",
+    "watch": "babel -w src --out-dir . --ignore __tests__ --plugins transform-object-rest-spread"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.16.2",
+    "uuid": "^3.1.0"
   }
 }
