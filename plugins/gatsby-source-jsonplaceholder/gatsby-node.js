@@ -7,6 +7,8 @@ exports.sourceNodes = ({ boundActionCreators }) => {
         internal: {
             contentDigest: 'asdf',
             type: 'myStuff'
-        }
+        },
+        booleanField: true,
+        numberField: 100
     });
 };
