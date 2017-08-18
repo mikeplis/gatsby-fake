@@ -4,6 +4,7 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-react-helmet',
-    'gatsby-source-jsonplaceholder'
+    'gatsby-source-jsonplaceholder',
+    // 'gatsby-source-hacker-news'
   ],
 }
