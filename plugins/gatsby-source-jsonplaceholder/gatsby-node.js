@@ -9,6 +9,9 @@ const uuidv5 = require('uuid/v5');
 const USER = 'user';
 const POST = 'post';
 const COMMENT = 'comment';
+const ALBUM = 'album';
+const PHOTO = 'photo';
+const TODO = 'todo';
 
 // namespace uuid so that we can generate consistent uuids - do not change this
 const UUID_NAMESPACE = '544e07b9-3f8c-4ebf-9013-344e9ddbac54';
@@ -82,22 +85,72 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
         createParentChildLink({ parent: postNode, child: commentNode });
     };
 
+    const createAlbumNode = album => {
+        const { id, userId } = album,
+              rest = _objectWithoutProperties(album, ['id', 'userId']);
+        const contentDigest = getDigest(album);
+        const userNode = getNode(getId(userId, USER));
+        const albumNode = _extends({}, rest, {
+            id: getId(id, ALBUM),
+            children: [],
+            parent: getId(userId, USER),
+            internal: {
+                contentDigest,
+                type: 'PlaceholderAlbum'
+            }
+        });
+        createNode(albumNode);
+        createParentChildLink({ parent: userNode, child: albumNode });
+    };
+
+    const createPhotoNode = photo => {
+        const { id, albumId } = photo,
+              rest = _objectWithoutProperties(photo, ['id', 'albumId']);
+        const contentDigest = getDigest(photo);
+        const albumNode = getNode(getId(albumId, ALBUM));
+        const photoNode = _extends({}, rest, {
+            id: getId(id, PHOTO),
+            children: [],
+            parent: getId(albumId, ALBUM),
+            internal: {
+                contentDigest,
+                type: 'PlaceholderPhoto'
+            }
+        });
+        createNode(photoNode);
+        createParentChildLink({ parent: albumNode, child: photoNode });
+    };
+
+    const createTodoNode = todo => {
+        const { id, userId } = todo,
+              rest = _objectWithoutProperties(todo, ['id', 'userId']);
+        const contentDigest = getDigest(todo);
+        const userNode = getNode(getId(userId, USER));
+        const todoNode = _extends({}, rest, {
+            id: getId(id, TODO),
+            children: [],
+            parent: getId(userId, USER),
+            internal: {
+                contentDigest,
+                type: 'PlaceholderTodo'
+            }
+        });
+        createNode(todoNode);
+        createParentChildLink({ parent: userNode, child: todoNode });
+    };
+
     const getUsers = axios.get('https://jsonplaceholder.typicode.com/users');
     const getPosts = axios.get('https://jsonplaceholder.typicode.com/posts');
     const getComments = axios.get('https://jsonplaceholder.typicode.com/comments');
-    axios.all([getUsers, getPosts, getComments]).then(axios.spread(({ data: users }, { data: posts }, { data: comments }) => {
-        console.log('got data');
+    const getAlbums = axios.get('https://jsonplaceholder.typicode.com/albums');
+    const getPhotos = axios.get('https://jsonplaceholder.typicode.com/photos?_limit=1000');
+    const getTodos = axios.get('https://jsonplaceholder.typicode.com/todos');
+    axios.all([getUsers, getPosts, getComments, getAlbums, getPhotos, getTodos]).then(axios.spread(({ data: users }, { data: posts }, { data: comments }, { data: albums }, { data: photos }, { data: todos }) => {
         users.forEach(createUserNode);
         posts.forEach(createPostNode);
         comments.forEach(createCommentNode);
+        albums.forEach(createAlbumNode);
+        photos.forEach(createPhotoNode);
+        todos.forEach(createTodoNode);
     }));
 };
-
-/**
- * what is a digest? https://stackoverflow.com/questions/3696857/whats-the-difference-between-message-digest-message-authentication-code-and-h
- * https://nodejs.org/api/crypto.html#crypto_class_hash
- *
- * 'id' field in createNode must be globally unique, or else your objects will get overwritten
- *
- * second argument to sourceNodes is pluginOptions, which are the options passed in via gatsby-config.js
- */

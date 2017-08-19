@@ -1,10 +1,10 @@
 module.exports = {
-  siteMetadata: {
-    title: 'Gatsby Default Starter',
-  },
-  plugins: [
-    'gatsby-plugin-react-helmet',
-    'gatsby-source-jsonplaceholder',
-    // 'gatsby-source-hacker-news'
-  ],
-}
+    siteMetadata: {
+        title: 'Gatsby Default Starter'
+    },
+    plugins: [
+        'gatsby-plugin-react-helmet',
+        'gatsby-source-jsonplaceholder'
+        // 'gatsby-source-hacker-news'
+    ]
+};
