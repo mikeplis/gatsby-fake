@@ -26,7 +26,7 @@ const getId = (id, namespace) => uuidv5(`${namespace}_${id}`, UUID_NAMESPACE);
 
 const getDigest = obj => crypto.createHash('md5').update(JSON.stringify(obj)).digest('hex');
 
-exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
+exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions, cb) => {
     const { createNode, createParentChildLink } = boundActionCreators;
 
     const createUserNode = user => {
@@ -143,7 +143,7 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
     const getPosts = axios.get('https://jsonplaceholder.typicode.com/posts');
     const getComments = axios.get('https://jsonplaceholder.typicode.com/comments');
     const getAlbums = axios.get('https://jsonplaceholder.typicode.com/albums');
-    const getPhotos = axios.get('https://jsonplaceholder.typicode.com/photos?_limit=1000');
+    const getPhotos = axios.get('https://jsonplaceholder.typicode.com/photos');
     const getTodos = axios.get('https://jsonplaceholder.typicode.com/todos');
     axios.all([getUsers, getPosts, getComments, getAlbums, getPhotos, getTodos]).then(axios.spread(({ data: users }, { data: posts }, { data: comments }, { data: albums }, { data: photos }, { data: todos }) => {
         users.forEach(createUserNode);
@@ -152,5 +152,8 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions) => {
         albums.forEach(createAlbumNode);
         photos.forEach(createPhotoNode);
         todos.forEach(createTodoNode);
+
+        // tell Gatsby we're done
+        cb();
     }));
 };

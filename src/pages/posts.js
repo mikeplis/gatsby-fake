@@ -1,13 +1,16 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-const PostsPage = props => {
-    console.log(props);
+const PostsPage = ({ data }) => {
+    console.log(data);
     return (
         <div>
-            <h1>Hi people</h1>
-            <p>Welcome to page 2</p>
-            <Link to="/">Go back to the homepage</Link>
+            <h1>Posts</h1>
+            {data.allPlaceholderPost.edges.map(({ node }) =>
+                <div key={node.id}>
+                    {node.title}
+                </div>
+            )}
         </div>
     );
 };
