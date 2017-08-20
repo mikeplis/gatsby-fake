@@ -3,7 +3,7 @@ import Link from 'gatsby-link';
 
 export default () => {
     return (
-        <ul>
+        <ul className="navigation">
             <li>
                 <Link to="/">Home</Link>
             </li>
@@ -12,6 +12,9 @@ export default () => {
             </li>
             <li>
                 <Link to="/posts">Posts</Link>
+            </li>
+            <li>
+                <Link to="/albums">Albums</Link>
             </li>
         </ul>
     );

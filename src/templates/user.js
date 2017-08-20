@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-export default ({ data: { placeholderUser: { id, name, username, email, posts, albums } } }) => {
+export default ({ data: { placeholderUser: { id, name, username, email, posts, albums, todos } } }) => {
     return (
         <div>
             <h1>
@@ -33,6 +33,14 @@ export default ({ data: { placeholderUser: { id, name, username, email, posts, a
                     </li>
                 )}
             </ul>
+            <h2>Todos</h2>
+            <ul>
+                {todos.map(({ id: todoId, title, completed }) =>
+                    <li key={todoId}>
+                        {title} {completed ? '\u2610' : '\u2611'}
+                    </li>
+                )}
+            </ul>
         </div>
     );
 };
@@ -51,6 +59,11 @@ export const pageQuery = graphql`
             albums: childrenPlaceholderAlbum {
                 id
                 title
+            }
+            todos: childrenPlaceholderTodo {
+                id
+                title
+                completed
             }
         }
     }

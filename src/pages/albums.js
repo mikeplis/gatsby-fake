@@ -1,15 +1,15 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-const PostsPage = ({ data: { allPlaceholderPost: { posts } } }) => {
+export default ({ data: { allPlaceholderAlbum: { albums } } }) => {
     return (
         <div>
-            <h1>Posts</h1>
+            <h1>Albums</h1>
             <ul>
-                {posts.map(({ post: { id, title, author } }) =>
+                {albums.map(({ album: { id, title, user } }) =>
                     <li key={id}>
-                        <Link to={`/posts/${id}`}>
-                            {title} (<small>{author.name}</small>)
+                        <Link to={`/albums/${id}`}>
+                            {title} (<small>{user.name}</small>)
                         </Link>
                     </li>
                 )}
@@ -18,16 +18,14 @@ const PostsPage = ({ data: { allPlaceholderPost: { posts } } }) => {
     );
 };
 
-export default PostsPage;
-
 export const pageQuery = graphql`
-    query PostsQuery {
-        allPlaceholderPost {
-            posts: edges {
-                post: node {
+    query AlbumsQuery {
+        allPlaceholderAlbum {
+            albums: edges {
+                album: node {
                     id
                     title
-                    author: parent {
+                    user: parent {
                         ... on PlaceholderUser {
                             name
                         }
