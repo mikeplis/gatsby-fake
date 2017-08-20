@@ -1,16 +1,11 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-import PostTitle from '../components/PostTitle';
-
-export default ({ data: { placeholderPost } }) => {
-    const { title, body, author } = placeholderPost;
+export default ({ data: { placeholderPost: { title, body, author, comments } } }) => {
     return (
         <div>
             <h1>
-                <PostTitle>
-                    {title}
-                </PostTitle>
+                {title}
             </h1>
             <div>
                 By: <Link to={`/users/${author.id}`}>{author.name}</Link>
@@ -18,6 +13,19 @@ export default ({ data: { placeholderPost } }) => {
             <p>
                 {body}
             </p>
+            <h2>Comments</h2>
+            <ul>
+                {comments.map(({ id, email, body: commentBody }) =>
+                    <li key={id}>
+                        <h3>
+                            {email}
+                        </h3>
+                        <p>
+                            {commentBody}
+                        </p>
+                    </li>
+                )}
+            </ul>
         </div>
     );
 };
@@ -33,6 +41,11 @@ export const pageQuery = graphql`
                     id
                     name
                 }
+            }
+            comments: childrenPlaceholderComment {
+                id
+                email
+                body
             }
         }
     }

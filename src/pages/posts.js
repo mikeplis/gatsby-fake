@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-import PostTitle from '../components/PostTitle';
-
 const PostsPage = ({ data }) => {
     return (
         <div>
@@ -11,9 +9,7 @@ const PostsPage = ({ data }) => {
                 {data.allPlaceholderPost.edges.map(({ node: { id, title } }) =>
                     <li key={id}>
                         <Link to={`/posts/${id}`}>
-                            <PostTitle>
-                                {title}
-                            </PostTitle>
+                            {title}
                         </Link>
                     </li>
                 )}

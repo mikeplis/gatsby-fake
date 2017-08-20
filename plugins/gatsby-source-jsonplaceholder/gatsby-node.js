@@ -54,9 +54,9 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions, cb) => {
             id: getId(id, POST),
             children: [],
             parent: getId(userId, USER),
-            content: JSON.stringify(body),
             internal: {
                 contentDigest,
+                content: JSON.stringify(body),
                 type: 'PlaceholderPost'
             },
             body
@@ -74,9 +74,9 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions, cb) => {
             id: getId(id, COMMENT),
             children: [],
             parent: getId(postId, POST),
-            content: JSON.stringify(body),
             internal: {
                 contentDigest,
+                content: JSON.stringify(body),
                 type: 'PlaceholderComment'
             },
             body

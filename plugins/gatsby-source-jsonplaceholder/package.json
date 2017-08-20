@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-jsonplaceholder",
-  "version": "",
+  "version": "1.0.0",
   "description": "",
   "main": "gatsby-node.js",
   "scripts": {

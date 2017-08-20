@@ -1,9 +1,7 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
-import PostTitle from '../components/PostTitle';
-
-export default ({ data: { placeholderUser: { id, name, username, email, childrenPlaceholderPost: posts } } }) => {
+export default ({ data: { placeholderUser: { id, name, username, email, posts, albums } } }) => {
     return (
         <div>
             <h1>
@@ -15,13 +13,22 @@ export default ({ data: { placeholderUser: { id, name, username, email, children
             <div>
                 Email: {email}
             </div>
+            <h2>Posts</h2>
             <ul>
                 {posts.map(({ id: postId, title }) =>
                     <li key={postId}>
                         <Link to={`/posts/${postId}`}>
-                            <PostTitle>
-                                {title}
-                            </PostTitle>
+                            {title}
+                        </Link>
+                    </li>
+                )}
+            </ul>
+            <h2>Albums</h2>
+            <ul>
+                {albums.map(({ id: albumId, title }) =>
+                    <li key={albumId}>
+                        <Link to={`/albums/${albumId}`}>
+                            {title}
                         </Link>
                     </li>
                 )}
@@ -37,7 +44,11 @@ export const pageQuery = graphql`
             name
             username
             email
-            childrenPlaceholderPost {
+            posts: childrenPlaceholderPost {
+                id
+                title
+            }
+            albums: childrenPlaceholderAlbum {
                 id
                 title
             }
