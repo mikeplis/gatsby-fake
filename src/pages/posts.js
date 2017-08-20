@@ -1,16 +1,23 @@
 import React from 'react';
 import Link from 'gatsby-link';
 
+import PostTitle from '../components/PostTitle';
+
 const PostsPage = ({ data }) => {
-    console.log(data);
     return (
         <div>
             <h1>Posts</h1>
-            {data.allPlaceholderPost.edges.map(({ node }) =>
-                <div key={node.id}>
-                    {node.title}
-                </div>
-            )}
+            <ul>
+                {data.allPlaceholderPost.edges.map(({ node: { id, title } }) =>
+                    <li key={id}>
+                        <Link to={`/posts/${id}`}>
+                            <PostTitle>
+                                {title}
+                            </PostTitle>
+                        </Link>
+                    </li>
+                )}
+            </ul>
         </div>
     );
 };

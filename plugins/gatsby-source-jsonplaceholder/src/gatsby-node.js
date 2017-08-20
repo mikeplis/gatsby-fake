@@ -1,5 +1,5 @@
 const axios = require('axios');
-const crypto = require(`crypto`);
+const crypto = require('crypto');
 const uuidv5 = require('uuid/v5');
 
 const USER = 'user';

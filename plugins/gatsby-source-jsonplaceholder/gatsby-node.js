@@ -3,7 +3,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 const axios = require('axios');
-const crypto = require(`crypto`);
+const crypto = require('crypto');
 const uuidv5 = require('uuid/v5');
 
 const USER = 'user';
