@@ -1,6 +1,8 @@
 const axios = require('axios');
 const crypto = require('crypto');
 const uuidv5 = require('uuid/v5');
+const storage = require('node-persist');
+const Promise = require('bluebird');
 
 const USER = 'user';
 const POST = 'post';
@@ -11,6 +13,10 @@ const TODO = 'todo';
 
 // namespace uuid so that we can generate consistent uuids - do not change this
 const UUID_NAMESPACE = '544e07b9-3f8c-4ebf-9013-344e9ddbac54';
+
+storage.initSync({
+    ttl: true
+});
 
 /**
  * Get a uuid based on the id from jsonplaceholder and some namespace (typically the type name)
@@ -136,6 +142,7 @@ exports.sourceNodes = ({ boundActionCreators, getNode }, pluginOptions, cb) => {
     };
 
     const getUsers = axios.get('https://jsonplaceholder.typicode.com/users');
+    // Promise.any([storage.getItem('asdf').then(d => d ? Promise.resolve({data:d}) : Promise.reject(d)), axios.get('https://jsonplaceholder.typicode.com/posts/1')]).then(x => console.log(x.data))
     const getPosts = axios.get('https://jsonplaceholder.typicode.com/posts');
     const getComments = axios.get('https://jsonplaceholder.typicode.com/comments');
     const getAlbums = axios.get('https://jsonplaceholder.typicode.com/albums');

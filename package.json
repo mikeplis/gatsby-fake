@@ -20,7 +20,9 @@
     "preserve": "npm run build",
     "serve": "gatsby serve",
     "format": "prettier --single-quote --print-width 120 --tab-width 4 --write 'src/**/*.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build -- --prefix-paths",
+    "deploy": "gh-pages -d public"
   },
   "devDependencies": {
     "eslint": "^4.5.0",
@@ -28,6 +30,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.2.1",
+    "gh-pages": "^1.0.0",
     "prettier": "^1.5.2"
   }
 }
